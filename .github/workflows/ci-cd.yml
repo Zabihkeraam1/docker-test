@@ -10,40 +10,48 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Ensure Docker is installed on the self-hosted runner
 
     steps:
+      # Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Set up Docker Buildx (optional, remove if not needed)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+      # Build the Docker image
       - name: Build Docker image
-        run: docker build -t yzabihkeraam/docker-test:latest .
+        run: docker build -t zabihkeraam/docker-test:latest .
 
+      # Stop and remove the previous container (if running)
       - name: Stop and remove previous container
         run: |
-          docker stop zabihkeraam/docker-test || true
-          docker rm zabihkeraam/docker-test || true
+          docker stop my-container || true
+          docker rm my-container || true
 
+      # Push the Docker image to Docker Hub
       - name: Push Docker image
         run: docker push zabihkeraam/docker-test:latest
 
+      # Run the Docker container
       - name: Run Docker container
         run: |
-          docker run -d --name zabihkeraam/docker-test -p 80:80 zabihkeraam/docker-test:latest
+          docker run -d --name my-container -p 80:80 zabihkeraam/docker-test:latest
 
+      # Verify the container is running
       - name: Verify container
         run: docker ps
 
-      # Runs a set of commands using the runners shell
+      # Additional steps (optional)
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
