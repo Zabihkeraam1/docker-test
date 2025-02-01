@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # Ensure Docker is installed on the self-hosted runner
+    runs-on: self-hosted  # Ensure Docker is installed on the self-hosted runner
 
     steps:
       # Check out the repository
