@@ -8,6 +8,7 @@ function App() {
     <>
       
       <h1>Hello DovOps</h1>
+      <button>Click me</button>
     </>
   )
 }
